@@ -24,6 +24,7 @@ app.post("/create-user", async (req, res) => {
       acs_system_id: acsSystemId,
       access_schedule: { starts_at, ends_at }
     })
+    console.log(`Opretter bruger ${acsUser.full_name}`)
 
     // Tilknyt access group
     await seam.acs.users.addToAccessGroup({
@@ -36,6 +37,7 @@ app.post("/create-user", async (req, res) => {
       acs_user_id: acsUser.acs_user_id,
       access_method: "code"
     })
+    console.log(`Opretter pinkode til ${acsUser.full_name}`)
 
     // Vent op til 10 sekunder, indtil Salto KS genererer PIN
     let pin = null
