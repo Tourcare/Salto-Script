@@ -24,7 +24,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 // Simpel login
 // ========================
 const USERS = [
-  { username: "admin", password: "hemmeligkode" }
+  { username: "admin", password: "tour123care" }
 ];
 
 app.post("/login", (req, res) => {
