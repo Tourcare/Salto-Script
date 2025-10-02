@@ -9,41 +9,9 @@ const port = 3000;
 app.use(bodyParser.json());
 
 // ========================
-// BASIC AUTH
-// ========================
-const USERNAME = "admin";
-const PASSWORD = "hemmeligkode";
-
-const basicAuth = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth) {
-    res.setHeader("WWW-Authenticate", 'Basic realm="Protected Frontend"');
-    return res.status(401).send("Adgang nægtet");
-  }
-
-  const [user, pass] = Buffer.from(auth.split(" ")[1], "base64")
-    .toString()
-    .split(":");
-
-  if (user === USERNAME && pass === PASSWORD) {
-    return next();
-  }
-
-  res.setHeader("WWW-Authenticate", 'Basic realm="Protected Frontend"');
-  return res.status(401).send("Adgang nægtet");
-};
-
-// Middleware på frontend
-app.use("/", basicAuth);
-
-// ========================
-// SERVER STATISKE FILER
-// ========================
-app.use(express.static(path.join(process.cwd(), "public")));
-
-// ========================
 // SEAM KONFIGURATION
 // ========================
+
 const seam = new Seam({ apiKey: "seam_8sRKUpeX_7uatm7jmHN2JSG8zSnPuBCWY" });
 const acsSystemId = "a6f8f2b6-d086-4b7a-a926-f979aba3666c";
 const accessGroupId = "bc68639e-62cc-4572-b087-f6e616800ab9";
@@ -51,6 +19,7 @@ const accessGroupId = "bc68639e-62cc-4572-b087-f6e616800ab9";
 // ========================
 // Opret bruger + PIN
 // ========================
+
 app.post("/create-user", async (req, res) => {
   try {
     const { full_name, starts_at, ends_at } = req.body;
@@ -90,6 +59,7 @@ app.post("/create-user", async (req, res) => {
 // ========================
 // Bloker unsubscribed brugere
 // ========================
+
 async function blockUnsubscribedUsers() {
   try {
     const users = await seam.acs.users.list({ acs_system_id: acsSystemId });
@@ -111,9 +81,11 @@ async function blockUnsubscribedUsers() {
 }
 
 // Tjek hvert 30. sekund
+
 setInterval(blockUnsubscribedUsers, 30 * 1000);
 
 // ========================
 // START SERVER
 // ========================
+
 app.listen(port, () => console.log(`Server kører på http://localhost:${port}`));
