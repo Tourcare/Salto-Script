@@ -1,0 +1,16 @@
+{
+  "name": "salto-script",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "seam": "^latest"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
